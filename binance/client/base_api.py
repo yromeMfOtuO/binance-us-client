@@ -9,16 +9,19 @@ import urllib.parse
 
 import requests
 
-api_url = "https://api.binance.us"
-account_path = "/api/v3/account"
-price_path='/api/v3/ticker/price'
-quote_path = "/sapi/v1/otc/quotes"
-place_order_path = "/sapi/v1/otc/orders"
-order_path = "/sapi/v1/otc/orders"
+API_URL = "https://api.binance.us"
+ACCOUNT_PATH = "/api/v3/account"
+PRICE_PATH= '/api/v3/ticker/price'
+QUOTE_PATH = "/sapi/v1/otc/quotes"
+PLACE_ORDER_PATH = "/sapi/v1/otc/orders"
+ORDER_PATH = "/sapi/v1/otc/orders"
 
 
 # get binanceus signature
 def get_binanceus_signature(data, secret):
+    """
+    gen signature
+    """
     postdata = urllib.parse.urlencode(data)
     message = postdata.encode()
     byte_key = bytes(secret, 'UTF-8')
@@ -27,6 +30,9 @@ def get_binanceus_signature(data, secret):
 
 
 def binanceus_get(uri_path, data, api_key, api_sec):
+    """
+    binance get request
+    """
     headers = {}
     headers['X-MBX-APIKEY'] = api_key
     signature = get_binanceus_signature(data, api_sec)
@@ -34,12 +40,15 @@ def binanceus_get(uri_path, data, api_key, api_sec):
         **data,
         "signature": signature,
     }
-    resp = requests.get((api_url + uri_path), params=params, headers=headers)
+    resp = requests.get((API_URL + uri_path), params=params, headers=headers)
     return resp.json()
 
 
 # Attaches auth headers and returns results of a POST request
 def binanceus_post(uri_path, data, api_key, api_sec):
+    """
+    binance post request
+    """
     headers = {}
     headers['X-MBX-APIKEY'] = api_key
     signature = get_binanceus_signature(data, api_sec)
@@ -47,5 +56,5 @@ def binanceus_post(uri_path, data, api_key, api_sec):
         **data,
         "signature": signature,
     }
-    resp = requests.post((api_url + uri_path), headers=headers, data=payload)
+    resp = requests.post((API_URL + uri_path), headers=headers, data=payload)
     return resp.json()

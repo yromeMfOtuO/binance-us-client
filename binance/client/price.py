@@ -1,22 +1,31 @@
+"""
+Price API
+"""
+
 from decimal import Decimal
 
 import requests
 
-from base_api import api_url, price_path
+from binance.client import API_URL, PRICE_PATH
 
 
 def get_symbol_price(symbol: str) -> Decimal:
-    resp = requests.get(f'{api_url}{price_path}?symbol={symbol}')
+    """
+    推荐使用 get_coin_price
+    :param symbol: symbol
+    :return: price(decimal.Decimal)
+    """
+    resp = requests.get(f'{API_URL}{PRICE_PATH}?symbol={symbol}')
     return Decimal(resp.json()['price'])
 
 
 def get_coin_price(coin: str) -> Decimal:
     """
     USDT USD 价格为 1
-    :param coin:
-    :return:
+    :param coin: coin
+    :return: price(decimal.Decimal)
     """
-    if coin == 'USDT' or coin == 'USD':
+    if coin in ('USDT', 'USD'):
         return Decimal(1)
     return get_symbol_price(f'{coin}USDT')
 
