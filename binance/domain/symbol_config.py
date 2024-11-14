@@ -1,6 +1,7 @@
 """
 币对配置
 """
+from binance.utils import to_str
 
 
 class Symbol:
@@ -55,8 +56,36 @@ class Symbol:
         self.symbol = reverse.symbol
         return self
 
-    def get_reverse_symbol(self):
+    def get_reverse_symbol(self) -> str:
         """
         get a reverse symbol
         """
         return self.quote_coin + self.base_coin
+
+    def base_min_limit_str(self) -> str:
+        """
+        避免展示为科学记数法
+        :return: base min limit str
+        """
+        return to_str(self.base_min_limit)
+
+    def base_max_limit_str(self) -> str:
+        """
+        避免展示为科学记数法
+        :return: base max limit str
+        """
+        return to_str(self.base_max_limit)
+
+    def quote_min_limit_str(self) -> str:
+        """
+        避免展示为科学记数法
+        :return: quote min limit str
+        """
+        return to_str(self.quote_min_limit)
+
+    def quote_max_limit_str(self) -> str:
+        """
+        避免展示为科学记数法
+        :return: quote max limit str
+        """
+        return to_str(self.quote_max_limit)

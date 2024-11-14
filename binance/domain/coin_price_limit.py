@@ -3,6 +3,8 @@
 """
 from decimal import Decimal
 
+from binance.utils import to_str
+
 
 class CoinPriceLimit:
     """
@@ -37,3 +39,17 @@ class CoinPriceLimit:
         """
         return self.max_limit * large_limit / self.std_usdt_max_amount \
             if large_limit > self.std_usdt_max_amount else self.max_limit
+
+    def min_limit_str(self):
+        """
+        避免展示为科学记数法
+        :return: min limit str
+        """
+        return to_str(self.min_limit)
+
+    def max_limit_str(self):
+        """
+        避免展示为科学记数法
+        :return: max limit str
+        """
+        return to_str(self.max_limit)
