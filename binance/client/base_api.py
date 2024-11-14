@@ -15,6 +15,7 @@ PRICE_PATH= '/api/v3/ticker/price'
 QUOTE_PATH = "/sapi/v1/otc/quotes"
 PLACE_ORDER_PATH = "/sapi/v1/otc/orders"
 ORDER_PATH = "/sapi/v1/otc/orders"
+HISTORICAL_TRADES = "/api/v3/historicalTrades"
 
 
 # get binanceus signature
@@ -39,6 +40,19 @@ def binanceus_get(uri_path, data, api_key, api_sec):
     params={
         **data,
         "signature": signature,
+    }
+    resp = requests.get((API_URL + uri_path), params=params, headers=headers)
+    return resp.json()
+
+
+def binanceus_get_without_signature(uri_path, data, api_key):
+    """
+    binance get request
+    """
+    headers = {}
+    headers['X-MBX-APIKEY'] = api_key
+    params={
+        **data,
     }
     resp = requests.get((API_URL + uri_path), params=params, headers=headers)
     return resp.json()
