@@ -10,7 +10,7 @@ from binance.client import API_URL, PRICE_PATH
 from binance.exception import SymbolException
 
 
-def get_symbol_price(symbol: str, process_error: bool = False) -> Decimal:
+def get_symbol_price(symbol: str) -> Decimal:
     """
     推荐使用 get_coin_price
     :param symbol: symbol
@@ -18,9 +18,11 @@ def get_symbol_price(symbol: str, process_error: bool = False) -> Decimal:
     :return: price(decimal.Decimal)
     """
     resp = requests.get(f'{API_URL}{PRICE_PATH}?symbol={symbol}')
-    if process_error and 'code' in resp.json():
-        raise SymbolException(resp.json())
-    return Decimal(resp.json()['price'])
+    result_json = resp.json()
+    if not resp.ok:
+        result_json['symbol'] = symbol
+        raise SymbolException(result_json)
+    return Decimal(result_json['price'])
 
 
 def get_coin_price(coin: str) -> Decimal:
@@ -58,7 +60,7 @@ def get_coin_price_with_default(coin: str, default: Decimal = Decimal(1)) -> Dec
     :return:
     """
     try:
-        return get_symbol_price(coin, process_error=True)
+        return get_coin_price(coin)
     except SymbolException as sex:
         print(f'get {coin} price error:', sex)
         return default

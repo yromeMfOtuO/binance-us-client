@@ -2,11 +2,9 @@
 get historical trades
 """
 
-from base_api import binanceus_get_without_signature, HISTORICAL_TRADES
-
 import requests
-API_URL = "https://api.binance.us"
-HISTORICAL_TRADES = "/api/v3/historicalTrades"
+
+from binance.client import binanceus_get_without_signature, API_URL, HISTORICAL_TRADES
 
 
 def binanceus_get_without_signature(uri_path, data, api_key):
@@ -15,7 +13,7 @@ def binanceus_get_without_signature(uri_path, data, api_key):
     """
     headers = {}
     headers['X-MBX-APIKEY'] = api_key
-    params={
+    params = {
         **data,
     }
     resp = requests.get((API_URL + uri_path), params=params, headers=headers)
