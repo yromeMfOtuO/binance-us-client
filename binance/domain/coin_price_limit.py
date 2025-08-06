@@ -26,7 +26,8 @@ class CoinPriceLimit:
         self.std_usdt_max_amount = std_usdt_max_amount
 
     def __str__(self) -> str:
-        return f'coin: {self.coin}, price: {self.price}, min_limit: {self.min_limit}, max_limit: {self.max_limit} \n'
+        return (f'coin: {self.coin}, price: {self.price}, '
+                f'min_limit: {self.min_limit}, max_limit: {self.max_limit} \n')
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -39,6 +40,14 @@ class CoinPriceLimit:
         """
         return self.max_limit * large_limit / self.std_usdt_max_amount \
             if large_limit > self.std_usdt_max_amount else self.max_limit
+
+    def get_specific_max_limit(self, specific_limit: Decimal) -> Decimal:
+        """
+        计算特定的限额
+        :param specific_limit:
+        :return:
+        """
+        return self.max_limit * specific_limit / self.std_usdt_max_amount
 
     def min_limit_str(self):
         """
